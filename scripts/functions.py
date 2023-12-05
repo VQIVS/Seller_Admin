@@ -1,4 +1,3 @@
-import requests
 from scripts.model import UserManager, UserManagerError
 
 user_obj = UserManager()

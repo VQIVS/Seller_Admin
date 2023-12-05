@@ -16,3 +16,18 @@ def create_connection(data, start, end):
 
 
 """ A function to get and save the user subscription link """
+
+def get_save_sublink(start, end):
+    try:
+        with open("subscription_links.txt", "w") as file:
+            for user_num in range(start, end):
+                username = f"TN_{user_num}"
+                try:
+                    sub_link = user_obj.sublink(username)
+                    file.write(f"{username} : {sub_link}\n")
+                except UserManagerError as e:
+                    print(f"Error for {username}: {e}")
+    except Exception as e:
+        print(f"Error writing to file: {e}")
+
+

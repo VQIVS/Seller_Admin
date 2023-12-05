@@ -31,3 +31,11 @@ def get_save_sublink(start, end):
         print(f"Error writing to file: {e}")
 
 
+"""" A function to retrieve the access token from the panel """
+
+def get_access_token():
+    try:
+        user_obj.get_token()
+        print("Token retrieved successfully")
+    except UserManagerError as e:
+        print(f"Error getting access token: {e}")

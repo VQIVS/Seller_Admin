@@ -60,3 +60,19 @@ class UserManager:
             error_message = f'Error creating user: {response.status_code}\nresponse body: {response.text}'
             raise UserManagerError(error_message)
 
+    def sublink(self, username):
+        url = self.base_url + f'user/{username}'
+        response = requests.get(url, headers=self.headers)
+        if response.status_code == 200:
+            user_data = response.json()
+            if "subscription_url" in user_data:
+                sub_link = user_data["subscription_url"]
+                return sub_link
+            else:
+                raise UserManagerError("Subscription URL not found")
+        elif response.status_code == 404:
+            raise UserManagerError("User not found")
+        else:
+            error_message = f'Error: {response.status_code}'
+            raise UserManagerError(error_message)
+

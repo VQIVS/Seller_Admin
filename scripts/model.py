@@ -76,3 +76,6 @@ class UserManager:
             error_message = f'Error: {response.status_code}'
             raise UserManagerError(error_message)
 
+    def reset_usage(self):
+        # not usable yet
+        pass

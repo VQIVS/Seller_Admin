@@ -1,14 +1,12 @@
-from scripts.model import UserManager, UserManagerError
-
-user_obj = UserManager()
+from scripts.model import UserManagerError
 
 """ A function to create a new user """
 
 
-def create_connection(data, start, end):
-    for number in range(start, end):
+def create_connection(user_obj, start, end, data):
+    for number in range(start, end + 1):
         try:
-            user_obj.creat(number, data)
+            user_obj.create(number, data)
             print("Success")
         except UserManagerError as e:
             print(f"Failed: {e}")
@@ -16,11 +14,12 @@ def create_connection(data, start, end):
 
 """ A function to get and save the user subscription link """
 
-def get_save_sublink(start, end):
+
+def get_save_sublink(user_obj, start, end):
     try:
         with open("subscription_links.txt", "w") as file:
-            for user_num in range(start, end):
-                username = f"TN_{user_num}"
+            for user_num in range(start, end + 1):
+                username = f"USER{user_num}"
                 try:
                     sub_link = user_obj.sublink(username)
                     file.write(f"{username} : {sub_link}\n")
@@ -32,7 +31,8 @@ def get_save_sublink(start, end):
 
 """" A function to retrieve the access token from the panel """
 
-def get_access_token():
+
+def get_access_token(user_obj):
     try:
         user_obj.get_token()
         print("Token retrieved successfully")

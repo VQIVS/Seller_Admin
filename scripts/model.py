@@ -1,17 +1,26 @@
 import requests
 import datetime
+import json
 
 """" UserManager class Error handling"""
+
 
 class UserManagerError(Exception):
     pass
 
 
 """" A class to handle the User management """
+
+
 class UserManager:
-    def __init__(self):
-        self.base_url = 'https://topnet.justadmins.xyz/api/'
+    def __init__(self, config_path='config.json'):
+        with open(config_path) as config_file:
+            config = json.load(config_file)
+
+        self.base_url = config.get('base_url')
         self.headers = {"Content-Type": "application/json"}
+        self.username = config.get('username')
+        self.password = config.get('password')
 
     def get_token(self):
         url = self.base_url + 'admin/token'
@@ -28,32 +37,21 @@ class UserManager:
             error_message = f'Error getting access token : {response.status_code}\nresponse body: {response.text}'
             raise UserManagerError(error_message)
 
-    def creat(self, num, data_limit):
+    def create(self, num, data_limit):
         url = self.base_url + 'user'
         now = datetime.datetime.now()
         expire = now + datetime.timedelta(days=30)
         expire_seconds = int(expire.timestamp())
         data = {
-            "username": f"TN_{num}",
+            "username": f"USER{num}",
             "proxies": {
                 "vmess": {},
                 "vless": {}
-            },
-            "inbounds": {
-                "vmess": [
-                    "VMess TCP",
-                    "VMess Websocket"
-                ],
-                "vless": [
-                    "VLESS TCP REALITY 8443",
-                    "VLESS TCP REALITY 2056"
-                ]
             },
             "expire": expire_seconds,
             "data_limit": data_limit,
             "data_limit_reset_strategy": "no_reset",
             "status": "active",
-            "note": "This user is for TopNet VPN provider.",
         }
         response = requests.post(url, json=data, headers=self.headers)
         if response.status_code != 200:

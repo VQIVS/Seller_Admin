@@ -38,3 +38,16 @@ def get_access_token(user_obj):
         print("Token retrieved successfully")
     except UserManagerError as e:
         print(f"Error getting access token: {e}")
+
+
+"""A function to delete users from the panel"""
+
+
+def delete_connection(user_obj, start, end):
+    for number in range(start, end + 1):
+        try:
+            username = f"USER{number}"
+            user_obj.delete(username)
+            print("Deleted successfully")
+        except UserManagerError as e:
+            print(f"Failed: {e}")

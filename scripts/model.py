@@ -123,3 +123,7 @@ class UserManager:
     def reset_usage(self):
         # not usable yet
         pass
+
+    def time_reset(self, username):
+        # not defined yet
+        pass

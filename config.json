@@ -1,0 +1,5 @@
+{
+  "base_url": "https://your_panel_domain/api/",
+  "username": "your_panel_username",
+  "password": "your_panel_password"
+}

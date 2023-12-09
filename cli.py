@@ -1,5 +1,6 @@
 import argparse
-from scripts.model import UserManager, UserManagerError
+from scripts.model import UserManager
+from scripts.functions import create_connection, delete_connection, get_save_sublink, get_access_token
 
 
 class CustomHelpFormatter(argparse.HelpFormatter):

@@ -74,6 +74,52 @@ class UserManager:
             error_message = f'Error: {response.status_code}'
             raise UserManagerError(error_message)
 
+    def delete(self, username):
+        url = self.base_url + f'user/{username}'
+        response = requests.delete(url, headers=self.headers)
+        if response.status_code == 200:
+            return "Deleted " + str(response.status_code)
+        else:
+            raise UserManagerError(f"Error: {response.status_code} & {username}")
+
+    def limited(self, username):
+        url = self.base_url + f'user/{username}'
+        response = requests.get(url, headers=self.headers)
+        if response.status_code == 200:
+            user_data = response.json()
+            if 'status' in user_data:
+                user_status = user_data["status"]
+                if user_status == 'limited':
+                    return username
+
+                else:
+                    raise UserManagerError(f'User: {username} is not limited')
+
+            else:
+                raise UserManagerError(f'User: {username} not found')
+
+        else:
+            raise UserManagerError(f"Error: {response.status_code} & {username}")
+
+    def expired(self, username):
+        url = self.base_url + f'user/{username}'
+        response = requests.get(url, headers=self.headers)
+        if response.status_code == 200:
+            user_data = response.json()
+            if 'status' in user_data:
+                user_status = user_data["status"]
+                if user_status == 'expired':
+                    return username
+
+                else:
+                    raise UserManagerError(f'User: {username} is not expired')
+
+            else:
+                raise UserManagerError(f'User: {username} not found')
+
+        else:
+            raise UserManagerError(f"Error: {response.status_code} & {username}")
+
     def reset_usage(self):
         # not usable yet
         pass
